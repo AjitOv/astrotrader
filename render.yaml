@@ -1,0 +1,22 @@
+# Render service spec — auto-deploys when GitHub push lands.
+# Reference: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: astrotrader-engine
+    runtime: docker
+    plan: free                    # 512 MB RAM, sleeps after 15 min idle
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      # Free-tier RAM is tight — warm only one symbol at startup.
+      # The rest lazy-load on first request (slower first hit, fits in memory).
+      - key: ASTROTRADE_WARMUP
+        value: "SPY"
+      # Set this to your Vercel URL after the first Vercel deploy:
+      #   https://<your-project>.vercel.app
+      # Multiple origins comma-separated. Leave blank to use the local defaults.
+      - key: ASTROTRADE_CORS_ORIGINS
+        sync: false               # set in dashboard, not committed
+    autoDeploy: true

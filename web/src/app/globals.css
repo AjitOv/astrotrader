@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body { background: #06070a; color: #dfe2e8; }
+body { font-feature-settings: "ss01", "cv01", "cv11"; }
+
+/* Subtle starfield. Pure CSS — no images. */
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 17% 27%, rgba(255,255,255,0.18), transparent 50%),
+    radial-gradient(1px 1px at 41% 71%, rgba(255,255,255,0.14), transparent 50%),
+    radial-gradient(1px 1px at 73% 19%, rgba(255,255,255,0.20), transparent 50%),
+    radial-gradient(1px 1px at 89% 53%, rgba(255,255,255,0.12), transparent 50%),
+    radial-gradient(1px 1px at 11% 89%, rgba(255,255,255,0.10), transparent 50%),
+    radial-gradient(1.2px 1.2px at 56% 44%, rgba(255,255,255,0.22), transparent 50%);
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(16,19,26,0.85), rgba(11,13,18,0.85));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.panel-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9aa1ad;
+}
+
+/* Discrete tick lines for the dial. */
+.tick { stroke: rgba(255,255,255,0.10); }
+.tick-strong { stroke: rgba(255,255,255,0.22); }
+
+/* ===== Clock animations ===== */
+
+/* Slow continuous rotation for the decorative star ring. */
+@keyframes clock-rotate-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Breathing opacity for major aspect lines. */
+@keyframes aspect-breathe {
+  0%, 100% { opacity: 0.22; }
+  50%      { opacity: 0.55; }
+}
+
+/* Entry animation: planets fade-in from a point at center. */
+@keyframes planet-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Earth heartbeat at the chart center. */
+@keyframes earth-pulse {
+  0%, 100% { r: 3; opacity: 0.55; }
+  50%      { r: 4.5; opacity: 0.95; }
+}
+
+/* "Now hand" — the hand from Earth to the Sun, gentle breathing. */
+@keyframes now-hand-glow {
+  0%, 100% { opacity: 0.30; }
+  50%      { opacity: 0.65; }
+}
+
+/* Apply once-on-mount via a class. The container scales planets in. */
+.clock-rotate-slow {
+  transform-origin: center;
+  animation: clock-rotate-slow 240s linear infinite;
+}
+
+.aspect-breathe {
+  animation: aspect-breathe 6s ease-in-out infinite;
+}
+
+/* Smooth glide between query-date positions (transform on the planet group). */
+.planet-glide {
+  transition: transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-box: fill-box;
+}
+
+/* Settle entry: small scale-up + fade, staggered via animation-delay. */
+.planet-settle {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: planet-settle 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.earth-pulse {
+  animation: earth-pulse 3.4s ease-in-out infinite;
+}
+
+.now-hand {
+  animation: now-hand-glow 4s ease-in-out infinite;
+}
+
+/* Respect prefers-reduced-motion. */
+@media (prefers-reduced-motion: reduce) {
+  .clock-rotate-slow,
+  .aspect-breathe,
+  .planet-settle,
+  .earth-pulse,
+  .now-hand {
+    animation: none !important;
+  }
+  .planet-glide { transition: none !important; }
+}

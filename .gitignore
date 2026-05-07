@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.env.local
+data_cache/*.bsp
+data_cache/*.parquet
+data_cache/*.npz
+data_cache/states/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Web (Next.js) build + deps
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/.vercel/
+web/next-env.d.ts
+web/tsconfig.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db

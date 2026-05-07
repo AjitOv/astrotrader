@@ -1,0 +1,26 @@
+# Keep the build context small.
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Web app — built and deployed separately on Vercel
+web/
+node_modules/
+
+# Caches that should regenerate at runtime — no point baking them in
+data_cache/prices_*.parquet
+data_cache/eph_*.parquet
+data_cache/de440s.bsp
+
+# Local-only
+.env
+.env.local
+.git/
+.gitignore
+.DS_Store
+summary.md
+tests/
+scripts/
