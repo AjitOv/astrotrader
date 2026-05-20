@@ -28,3 +28,6 @@ web/tsconfig.tsbuildinfo
 
 # OS
 Thumbs.db
+
+# Claude Code internal state
+.claude/
