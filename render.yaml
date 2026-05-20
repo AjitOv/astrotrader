@@ -10,10 +10,13 @@ services:
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"
-      # Free-tier RAM is tight — warm only one symbol at startup.
-      # The rest lazy-load on first request (slower first hit, fits in memory).
+      # Warm all 13 symbols so Vercel's 10s function timeout doesn't strand
+      # cold lookups. Startup takes ~5 min; /health returns OK immediately so
+      # Render marks the service healthy while warmup proceeds in background.
+      # If memory tightens, drop crypto/India first (BTC/ETH have the heaviest
+      # 7-day-trading state matrices).
       - key: ASTROTRADE_WARMUP
-        value: "SPY"
+        value: "SPY,QQQ,IWM,GLD,USO,XAUUSD,NIFTY,BANKNIFTY,RELIANCE,TCS,HDFCBANK,BTCUSD,ETHUSD"
       # Set this to your Vercel URL after the first Vercel deploy:
       #   https://<your-project>.vercel.app
       # Multiple origins comma-separated. Leave blank to use the local defaults.
