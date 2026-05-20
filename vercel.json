@@ -3,6 +3,5 @@
   "buildCommand": "cd web && npm install && npm run build",
   "installCommand": "echo skip-root-install",
   "outputDirectory": "web/.next",
-  "framework": "nextjs",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- web astrotrader/api"
+  "framework": "nextjs"
 }
